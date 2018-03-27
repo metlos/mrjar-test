@@ -1,0 +1,20 @@
+This example tries to compile a multi-release jar for 3 java versions.
+
+The base code in `src` is intended for java 8, code in `src9` and `src9-module`
+is intended for java 9 and similarly `src10` and `src10-module` are intended
+for java 10.
+
+The `naive.sh` script tries to just compile each of the source code versions
+once and fails at that. To avoid "juggling" with files it "merges" `src*` with
+`src*-module` for the purposes of compilation.
+
+The `working.sh` script uses 2 compilation passes for the 9 and 10 versions. It
+first compiles just the code in `src?` with `src` on classpath and then compiles
+`src?/module-info.java` with `src` on the source path. It then composes it all
+together into the `mr.jar` file.
+
+You can try running it with java 8, 9 and 10 and each time it produces different 
+output proving that the composed jar file is correct:
+
+  java -cp mr.jar Main
+
